@@ -10,6 +10,8 @@ const https=require('https');
 const url=require('url');
 const StringDecoder=require('string_decoder').StringDecoder;
 const Config=require('./config');
+const handlers=require('./lib/handlers');
+const helpers=require('./lib/helpers');
 const fs=require('fs');
 // const _data=require('./lib/data');
 
@@ -84,9 +86,8 @@ var unifiedServer=function(req,res){
             'queryStringObject':queryStringObject,
             'method':method,
             'headers':headers,
-            'payload':buffer
+            'payload':helpers.parseJsonToObject(buffer)
         };
-
         //Route the request to the handler specified in the router
         chosenHandler(data,function(statusCode,payload){
             // Use the status code called back by the handler, or default 200
@@ -110,21 +111,9 @@ var unifiedServer=function(req,res){
     })
 }
 
-//Define the handlers
-var handlers={};
-
-//Sample Handler
-handlers.ping = function(data,callback){
-    //Callback a http status code, and a payload object
-    callback(200)
-};
-
-//NotFound Handler
-handlers.notFound=function(data,callback){
-    callback(404);
-};
 
 //Define a request router
 var router = {
-    'ping' : handlers.ping
+    'ping' : handlers.ping,
+    'users': handlers.users
 }
