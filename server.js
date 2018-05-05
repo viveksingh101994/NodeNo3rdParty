@@ -88,6 +88,7 @@ var unifiedServer=function(req,res){
             'headers':headers,
             'payload':helpers.parseJsonToObject(buffer)
         };
+       
         //Route the request to the handler specified in the router
         chosenHandler(data,function(statusCode,payload){
             // Use the status code called back by the handler, or default 200
@@ -115,5 +116,7 @@ var unifiedServer=function(req,res){
 //Define a request router
 var router = {
     'ping' : handlers.ping,
-    'users': handlers.users
+    'users': handlers.users,
+    'tokens': handlers.token,
+    'checks':handlers.checks
 }
